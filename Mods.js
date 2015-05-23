@@ -4,6 +4,7 @@
 NodeList.prototype.forEach = HTMLFormControlsCollection.prototype.forEach = Array.prototype.forEach;
 NodeList.prototype.indexOf = HTMLFormControlsCollection.prototype.indexOf = Array.prototype.indexOf;
 
+Document.prototype.find = Document.prototype.querySelectorAll;
 Element.prototype.find = Element.prototype.querySelectorAll;
 Node.prototype.on = Node.prototype.addEventListener;
 Node.prototype.off = Node.prototype.removeEventListener;
