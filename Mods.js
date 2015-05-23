@@ -32,11 +32,12 @@ HTMLFormElement.prototype.serializeAssoc = function(){
   var ToReturn = {};
   var LFFix = /\r?\n/g;
   var SpaceFix = /%20/g;
-  this.elements.forEach(function(n){
+  for(var i = 0; i < this.elements.length; ++i){
+    var n = this.elements[i];
     if (!n.name || ((n.type === 'checkbox' || n.type === 'radio') && !n.checked)){
-      return ;
+      continue ;
     }
     ToReturn[n.name] = n.value.replace(LFFix, "\n").replace(SpaceFix, '+');
-  });
+  }
   return ToReturn;
 };
