@@ -6,6 +6,15 @@ NodeList.prototype.indexOf = HTMLFormControlsCollection.prototype.indexOf = Arra
 
 Element.prototype.find = Document.prototype.find = Document.prototype.querySelector;
 Element.prototype.findAll = Document.prototype.findAll = Document.prototype.querySelectorAll;
+Element.prototype.addClass = function(name){
+  this.classList.add(name);
+};
+Element.prototype.removeClass = function(name){
+  this.classList.remove(name);
+};
+Element.prototype.toggleClass = function(name){
+  this.classList.toggle(name);
+};
 Node.prototype.on = Node.prototype.addEventListener;
 Node.prototype.off = Node.prototype.removeEventListener;
 
