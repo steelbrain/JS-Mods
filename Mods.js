@@ -4,8 +4,10 @@
 NodeList.prototype.forEach = HTMLFormControlsCollection.prototype.forEach = Array.prototype.forEach;
 NodeList.prototype.indexOf = HTMLFormControlsCollection.prototype.indexOf = Array.prototype.indexOf;
 
-Element.prototype.find = Document.prototype.find = Document.prototype.querySelector;
-Element.prototype.findAll = Document.prototype.findAll = Document.prototype.querySelectorAll;
+Element.prototype.find = Element.prototype.querySelector;
+Element.prototype.findAll = Element.prototype.querySelectorAll;
+Document.prototype.find = Document.prototype.querySelector;
+Document.prototype.findAll = Document.prototype.querySelectorAll;
 Element.prototype.addClass = function(name){
   this.classList.add(name);
 };
