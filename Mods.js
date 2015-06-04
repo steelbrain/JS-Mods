@@ -6,6 +6,9 @@ NodeList.prototype.indexOf = HTMLFormControlsCollection.prototype.indexOf = Arra
 
 Element.prototype.find = Element.prototype.querySelector;
 Element.prototype.findAll = Element.prototype.querySelectorAll;
+Document.prototype.onReady = function(Callback){
+  this.readyState == "complete" ? Callback() : document.on('DOMContentLoaded', Callback);
+};
 Document.prototype.find = Document.prototype.querySelector;
 Document.prototype.findAll = Document.prototype.querySelectorAll;
 Element.prototype.addClass = function(name){
