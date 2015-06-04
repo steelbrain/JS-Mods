@@ -44,7 +44,7 @@ HTMLFormElement.prototype.serialize = function(){
   var ToReturn = [];
   var Vals = this.serializeAssoc();
   for(var i in Vals){
-    ToReturn.push(i + '=' + Vals[i]);
+    ToReturn.push(i + '=' + encodeURIComponent(Vals[i]));
   }
   return ToReturn.join('&');
 };
