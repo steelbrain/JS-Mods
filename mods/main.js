@@ -1,0 +1,5 @@
+require('./element')(Element.prototype)
+require('./window')(window)
+require('./document')(Document.prototype)
+require('./event-target')(EventTarget.prototype)
+require('./element-form')(HTMLFormElement.prototype)
