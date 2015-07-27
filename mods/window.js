@@ -31,4 +31,10 @@ module.exports = function(window){
     toReturn.prototype = callback.prototype
     return toReturn
   }
+  window.setImmediate = function(func){
+    setTimeout(func, 0)
+  }
+  window.reload = function(timeout = 2000){
+    setTimeout(() => location.reload(), timeout)
+  }
 }
