@@ -15,13 +15,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }return n[o].exports;
   }var i = typeof require == "function" && require;for (var o = 0; o < r.length; o++) s(r[o]);return s;
 })({ 1: [function (require, module, exports) {
-    require('./element')(Element.prototype);
-    require('./window')(window);
-    require('./event-kit')(window);
     require('./document')(Document.prototype);
-    require('./event-target')(EventTarget.prototype);
+    require('./element')(Element.prototype);
     require('./element-form')(HTMLFormElement.prototype);
-    require('./misc');
+    require('./event-kit')(window);
+    require('./event-target')(EventTarget.prototype);
+    require('./misc')();
+    require('./window')(window);
   }, { "./document": 2, "./element": 4, "./element-form": 3, "./event-kit": 5, "./event-target": 6, "./misc": 7, "./window": 8 }], 2: [function (require, module, exports) {
     module.exports = function (Prototype) {
       Prototype.byId = Prototype.getElementById;
