@@ -22,4 +22,13 @@ module.exports = function(window){
     }
     return ToReturn.join('&')
   }
+  window.debounce = function(callback, delay){
+    let timeout = null
+    let toReturn = function(arg){
+      clearTimeout(timeout)
+      timeout = setTimeout(() => callback.call(this, arg), delay)
+    }
+    toReturn.prototype = callback.prototype
+    return toReturn
+  }
 }
