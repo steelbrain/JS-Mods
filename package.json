@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "uc-compile mods/main.js --Transpile --Browserify > browser.js",
-    "compile-min": "uc-compile mods/main.js --Transpile --Browserify --Compress > browser.min.js"
+    "compile-min": "uc-compile mods/main.js --Transpile --Browserify --Compress > browser.min.js",
+    "prepublish": "npm run compile; npm run compile-min; git add browser.js; git add browser.min.js;"
   },
   "repository": {
     "type": "git",
