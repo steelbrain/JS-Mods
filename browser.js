@@ -32,6 +32,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       Prototype.Ready = function (Callback) {
         this.readyState === "complete" || this.readyState === 'interactive' ? Callback() : this.on('DOMContentLoaded', Callback);
       };
+      Prototype.onScrollToBottom = function (Callback) {
+        var _this = this;
+
+        var InProgress = false;
+        var Watcher = function Watcher(e) {
+          if (InProgress) return;
+          if (_this.body.scrollHeight <= _this.body.scrollTop + window.innerHeight + 1000) {
+            InProgress = true;new Promise(function (resolve) {
+              return resolve(Callback(e));
+            }).then(function () {
+              return InProgress = false;
+            });
+          }
+        };
+        return this.on('scroll', Watcher);
+      };
     };
   }, {}], 3: [function (require, module, exports) {
     module.exports = function (Prototype) {
@@ -115,17 +131,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return rect.top >= 0 && rect.bottom <= window.innerHeight;
       };
       Prototype.onScrollIntoView = function (callback) {
-        var _this = this;
+        var _this2 = this;
 
         setImmediate(function () {
-          if (_this.isInViewPort()) return callback.call(_this);
+          if (_this2.isInViewPort()) return callback.call(_this2);
           var frameRequest = null;
           var onScroll = function onScroll() {
             cancelAnimationFrame(frameRequest);
             frameRequest = requestAnimationFrame(function () {
-              if (_this.isInViewPort()) {
+              if (_this2.isInViewPort()) {
                 document.off('scroll', onScroll);
-                callback.call(_this);
+                callback.call(_this2);
               }
             });
           };
@@ -159,22 +175,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   }, { "zm-event-kit/src/EventKit.js": 12 }], 6: [function (require, module, exports) {
     module.exports = function (Prototype) {
       Prototype.on = function (event, callback) {
-        var _this2 = this;
+        var _this3 = this;
 
         this.addEventListener(event, callback);
         return new Disposable(function () {
-          return _this2.removeEventListener(event, callback);
+          return _this3.removeEventListener(event, callback);
         });
       };
       Prototype.once = function (name, callback) {
-        var _this3 = this;
+        var _this4 = this;
 
         var realCallback = function realCallback(e) {
-          return _this3.removeEventListener(name, realCallback) || callback.call(_this3, e);
+          return _this4.removeEventListener(name, realCallback) || callback.call(_this4, e);
         };
         this.on(name, realCallback);
         return new Disposable(function () {
-          return _this3.removeEventListener(event, realCallback);
+          return _this4.removeEventListener(event, realCallback);
         });
       };
     };
@@ -182,6 +198,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     module.exports = function () {
       NodeList.prototype.forEach = HTMLCollection.prototype.forEach = HTMLFormControlsCollection.prototype.forEach = Array.prototype.forEach;
       NodeList.prototype.indexOf = HTMLCollection.prototype.indexOf = HTMLFormControlsCollection.prototype.indexOf = Array.prototype.indexOf;
+      Promise.prototype["finally"] = function (callback) {
+        return this.then(function (result) {
+          return callback(null, result);
+        }, function (error) {
+          return callback(error);
+        });
+      };
+      Location.prototype.getParam = function (key) {
+        var value = new RegExp('[?&]' + key + '=[^&]+').exec(this.search);
+        return !!value ? decodeURIComponent(value.toString().replace(/^[^=]+./, '')) : false;
+      };
     };
   }, {}], 8: [function (require, module, exports) {
     module.exports = function (window) {
@@ -211,11 +238,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       window.debounce = function (callback, delay) {
         var timeout = null;
         var toReturn = function toReturn(arg) {
-          var _this4 = this;
+          var _this5 = this;
 
           clearTimeout(timeout);
           timeout = setTimeout(function () {
-            return callback.call(_this4, arg);
+            return callback.call(_this5, arg);
           }, delay);
         };
         toReturn.prototype = callback.prototype;
@@ -262,21 +289,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "add",
         value: function add() {
-          var _this5 = this;
+          var _this6 = this;
 
           if (this.disposed) return;
           Array.prototype.forEach.call(arguments, function (item) {
-            return _this5.disposables.add(item);
+            return _this6.disposables.add(item);
           });
         }
       }, {
         key: "remove",
         value: function remove() {
-          var _this6 = this;
+          var _this7 = this;
 
           if (this.disposed) return;
           Array.prototype.forEach.call(arguments, function (item) {
-            return _this6.disposables["delete"](item);
+            return _this7.disposables["delete"](item);
           });
         }
       }, {
@@ -336,7 +363,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "on",
         value: function on(eventName, handler) {
-          var _this7 = this;
+          var _this8 = this;
 
           if (this.disposed) throw new Error('Emitter has been disposed');
           if (typeof handler !== 'function') throw new Error('Handler must be a function');
@@ -346,7 +373,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.handlersByEventName[eventName] = [handler];
           }
           return new Disposable(function () {
-            return _this7.off(eventName, handler);
+            return _this8.off(eventName, handler);
           });
         }
       }, {
