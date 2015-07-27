@@ -1,6 +1,6 @@
 {
   "name": "js-mods",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "JS Prototypes with SuperPowers!",
   "main": "mods/main.js",
   "scripts": {
