@@ -31,6 +31,14 @@ module.exports = function(window){
     toReturn.prototype = callback.prototype
     return toReturn
   }
+  window.memoize = function(callback){
+    let cache = {}
+    let toReturn = function(arg){
+      return cache[arg] ? cache[arg] : cache[arg] = callback.call(this, arg)
+    }
+    toReturn.prototype = callback.prototype
+    return toReturn()
+  }
   window.setImmediate = function(func){
     setTimeout(func, 0)
   }
