@@ -115,7 +115,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return this;
       };
       Prototype.insertAfter = function (item) {
-        this.parentNode.insertBefore(item, this.nextSibling);
+        item.parentNode.insertBefore(this, item.nextSibling);
         return this;
       };
       Prototype.addClass = function (name) {
