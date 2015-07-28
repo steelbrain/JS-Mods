@@ -31,6 +31,14 @@ module.exports = function(window){
     toReturn.prototype = callback.prototype
     return toReturn
   }
+  window.lock = function(callback){
+    let status = false
+    return function(arg){
+      if(status) return status
+      status = true
+      return Promise.resolve(callback.call(this, arg)).then(() => {status = false})
+    }
+  }
   window.memoize = function(callback){
     let cache = {}
     let toReturn = function(arg){
