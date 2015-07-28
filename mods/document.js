@@ -8,16 +8,12 @@ module.exports = function(Prototype){
     this.readyState === "complete" || this.readyState === 'interactive' ? Callback() : this.on('DOMContentLoaded', Callback)
   }
   Prototype.onScrollToBottom = function(Callback){
-    let InProgress = false
-    let Watcher = e => {
-      if (InProgress) return
-      if (this.body.scrollHeight <=
+    let Watcher = window.lock(e => {
+      if(this.body.scrollHeight <=
         this.body.scrollTop +
-        window.innerHeight + 1000) {
-        InProgress = true
-        ;(new Promise(resolve => resolve(Callback(e)))).then(() => InProgress = false)
-      }
-    }
+        window.innerHeight + 1000)
+        return Callback(e)
+    })
     return this.on('scroll', Watcher)
   }
 }
