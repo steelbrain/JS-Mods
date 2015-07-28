@@ -75,6 +75,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       Prototype.byTag = Prototype.getElementsByTagName;
       Prototype.find = Prototype.querySelector;
       Prototype.findAll = Prototype.querySelectorAll;
+      Prototype.hide = function () {
+        this.setAttribute('hidden', true);
+        return this;
+      };
+      Prototype.show = function () {
+        this.removeAttribute('hidden');
+        return this;
+      };
+      Prototype.toggleVisibility = function () {
+        if (this.hasAttribute('hidden')) {
+          this.show();
+        } else {
+          this.hide();
+        }
+      };
       Prototype.setAttr = function (key, value) {
         this.setAttribute(key, value);
         return this;
