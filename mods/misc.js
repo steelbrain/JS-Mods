@@ -6,7 +6,7 @@ module.exports = function(){
     if(index >= 0){
       return this[index]
     } else {
-      return this[this.length + index]
+      return this[this.length + index - 1]
     }
   }
   NodeList.prototype.forEach = HTMLCollection.prototype.forEach = HTMLFormControlsCollection.prototype.forEach = Array.prototype.forEach
