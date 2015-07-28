@@ -44,7 +44,7 @@ module.exports = function(Prototype){
     return this
   }
   Prototype.insertAfter = function(item){
-    item.parentNode.insertBefore(item, this.nextSibling);
+    item.parentNode.insertBefore(this, item.nextSibling);
     return this
   }
   Prototype.addClass = function(name){
