@@ -43,6 +43,7 @@ module.exports = function(Prototype){
     item.prepend(this)
     return this
   }
+  // Note: This behavior is not compliant with insertBefore one
   Prototype.insertAfter = function(item){
     item.parentNode.insertBefore(this, item.nextSibling);
     return this

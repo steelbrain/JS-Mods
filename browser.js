@@ -35,17 +35,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       Prototype.onScrollToBottom = function (Callback) {
         var _this = this;
 
-        var InProgress = false;
-        var Watcher = function Watcher(e) {
-          if (InProgress) return;
-          if (_this.body.scrollHeight <= _this.body.scrollTop + window.innerHeight + 1000) {
-            InProgress = true;new Promise(function (resolve) {
-              return resolve(Callback(e));
-            }).then(function () {
-              return InProgress = false;
-            });
-          }
-        };
+        var Watcher = window.lock(function (e) {
+          if (_this.body.scrollHeight <= _this.body.scrollTop + window.innerHeight + 1000) return Callback(e);
+        });
         return this.on('scroll', Watcher);
       };
     };
@@ -114,6 +106,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         item.prepend(this);
         return this;
       };
+      // Note: This behavior is not compliant with insertBefore one
       Prototype.insertAfter = function (item) {
         item.parentNode.insertBefore(this, item.nextSibling);
         return this;
@@ -144,6 +137,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       Prototype.isInViewPort = function () {
         var rect = this.getBoundingClientRect();
         return rect.top >= 0 && rect.bottom <= window.innerHeight;
+      };
+      Prototype.childrenCount = function (selector) {
+        var toReturn = 0;
+        this.children.forEach(function (item) {
+          return item.matches(selector) ? ++toReturn : null;
+        });
+        return toReturn;
       };
       Prototype.onScrollIntoView = function (callback) {
         var _this2 = this;
@@ -274,6 +274,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         };
         toReturn.prototype = callback.prototype;
         return toReturn;
+      };
+      window.lock = function (callback) {
+        var status = false;
+        return function (arg) {
+          if (status) return status;
+          status = true;
+          try {
+            Promise.resolve(callback.call(this, arg)).then(function () {
+              status = false;
+            })["catch"](function (e) {
+              console.debug(e);
+            });
+          } catch (e) {
+            console.debug(e);
+          }
+        };
       };
       window.memoize = function (callback) {
         var cache = {};
