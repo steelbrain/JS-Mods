@@ -36,7 +36,11 @@ module.exports = function(window){
     return function(arg){
       if(status) return status
       status = true
-      return Promise.resolve(callback.call(this, arg)).then(() => {status = false})
+      try {
+        Promise.resolve(callback.call(this, arg))
+        .then(() => {status = false})
+        .catch(e => {console.debug(e)})
+      } catch(e){ console.debug(e) }
     }
   }
   window.memoize = function(callback){
