@@ -51,6 +51,18 @@ module.exports = function(window){
     toReturn.prototype = callback.prototype
     return toReturn()
   }
+  window.extend = function() {
+    var extended = {}
+    for(var key in arguments) {
+      var argument = arguments[key];
+      for (var prop in argument) {
+        if (Object.prototype.hasOwnProperty.call(argument, prop)) {
+          extended[prop] = argument[prop]
+        }
+      }
+    }
+    return extended;
+  }
   window.setImmediate = function(func){
     setTimeout(func, 0)
   }
