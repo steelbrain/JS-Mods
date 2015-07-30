@@ -138,13 +138,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var rect = this.getBoundingClientRect();
         return rect.top >= 0 && rect.bottom <= window.innerHeight;
       };
-      Prototype.childrenCount = function (selector) {
-        var toReturn = 0;
-        this.children.forEach(function (item) {
-          return item.matches(selector) ? ++toReturn : null;
-        });
-        return toReturn;
-      };
       Prototype.onScrollIntoView = function (callback) {
         var _this2 = this;
 
@@ -298,6 +291,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         };
         toReturn.prototype = callback.prototype;
         return toReturn();
+      };
+      window.extend = function () {
+        var toReturn = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+        for (var i = 1; i <= arguments.length; ++i) {
+          var argument = arguments[i];
+          for (var prop in argument) {
+            if (Object.prototype.hasOwnProperty.call(argument, prop)) {
+              toReturn[prop] = argument[prop];
+            }
+          }
+        }
+        return toReturn;
       };
       window.setImmediate = function (func) {
         setTimeout(func, 0);
