@@ -75,6 +75,10 @@ module.exports = function(Prototype){
     var rect = this.getBoundingClientRect()
     return rect.top >= 0 && rect.bottom <= window.innerHeight
   }
+  Prototype.offset = function(){
+    var rect = this.getBoundingClientRect()
+    return {top: rect.top, left: rect.left}
+  }
   Prototype.onScrollIntoView = function(callback){
     setImmediate(() => {
       if(this.isInViewPort()) return callback.call(this)
