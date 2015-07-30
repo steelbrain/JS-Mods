@@ -52,7 +52,7 @@ module.exports = function(window){
     return toReturn()
   }
   window.extend = function() {
-    var extended = {}
+    var extended = Array.prototype.pop.call(arguments) || {}
     for(var key in arguments) {
       var argument = arguments[key];
       for (var prop in argument) {
