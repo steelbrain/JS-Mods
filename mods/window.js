@@ -51,17 +51,16 @@ module.exports = function(window){
     toReturn.prototype = callback.prototype
     return toReturn()
   }
-  window.extend = function() {
-    var extended = Array.prototype.pop.call(arguments) || {}
-    for(var key in arguments) {
-      var argument = arguments[key];
+  window.extend = function(toReturn = {}) {
+    for(var i = 1; i <= arguments.length; ++i){
+      var argument = arguments[i];
       for (var prop in argument) {
         if (Object.prototype.hasOwnProperty.call(argument, prop)) {
-          extended[prop] = argument[prop]
+          toReturn[prop] = argument[prop]
         }
       }
     }
-    return extended;
+    return toReturn;
   }
   window.setImmediate = function(func){
     setTimeout(func, 0)
