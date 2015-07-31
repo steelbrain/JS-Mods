@@ -9,6 +9,10 @@ module.exports = function(){
       return this[this.length + index - 1]
     }
   }
+  Array.prototype.insert = function(index, item){
+    this.splice(index, 0, item)
+    return this
+  }
   NodeList.prototype.forEach = HTMLCollection.prototype.forEach = HTMLFormControlsCollection.prototype.forEach = Array.prototype.forEach
   NodeList.prototype.indexOf = HTMLCollection.prototype.indexOf = HTMLFormControlsCollection.prototype.indexOf = Array.prototype.indexOf
   NodeList.prototype.last = HTMLCollection.prototype.last = HTMLFormControlsCollection.prototype.last = Array.prototype.last
