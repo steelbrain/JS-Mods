@@ -138,6 +138,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var rect = this.getBoundingClientRect();
         return rect.top >= 0 && rect.bottom <= window.innerHeight;
       };
+      Prototype.offset = function () {
+        var rect = this.getBoundingClientRect();
+        return { top: rect.top, left: rect.left };
+      };
       Prototype.onScrollIntoView = function (callback) {
         var _this2 = this;
 
@@ -213,6 +217,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         } else {
           return this[this.length + index - 1];
         }
+      };
+      Array.prototype.insert = function (index, item) {
+        this.splice(index, 0, item);
+        return this;
       };
       NodeList.prototype.forEach = HTMLCollection.prototype.forEach = HTMLFormControlsCollection.prototype.forEach = Array.prototype.forEach;
       NodeList.prototype.indexOf = HTMLCollection.prototype.indexOf = HTMLFormControlsCollection.prototype.indexOf = Array.prototype.indexOf;
