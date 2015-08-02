@@ -15,7 +15,7 @@ module.exports = function(window){
     XHR.send(Contents)
     return Deferred.promise
   }
-  window.ajax.Serialize = function(values){
+  window.ajax.serialize = function(values){
     let ToReturn = []
     for(var i in values){
       ToReturn.push(i + '=' + encodeURIComponent(values[i]))
