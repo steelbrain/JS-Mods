@@ -1,14 +1,14 @@
 module.exports = function(window){
-  window.Ajax = function(Url, Method, Contents){
+  window.Ajax = function(Url, Method, Contents) {
     let XHR = new XMLHttpRequest()
     let Deferred = Promise.defer()
     XHR.open(Method, Url, true)
     XHR.withCredentials = true
     XHR.addEventListener('load', () => {
       if (XHR.status >= 200 && XHR.status < 400) {
-        Deferred.resolve(XHR.responseText,XHR)
+        Deferred.resolve(XHR.responseText)
       } else {
-        Deferred.reject(new Error("HTTP Error"))
+        Deferred.reject({code: XHR.status, response: XHR.responseText})
       }
     })
     XHR.addEventListener('error', Deferred.reject)
