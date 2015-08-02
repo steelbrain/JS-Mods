@@ -29,16 +29,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       Prototype.byTag = Prototype.getElementsByTagName;
       Prototype.find = Prototype.querySelector;
       Prototype.findAll = Prototype.querySelectorAll;
-      Prototype.Ready = function (Callback) {
-        this.readyState === "complete" || this.readyState === 'interactive' ? Callback() : this.on('DOMContentLoaded', Callback);
+      Prototype.ready = function (Callback) {
+        this.readyState !== 'loading' ? Callback() : this.on('DOMContentLoaded', Callback);
       };
       Prototype.onScrollToBottom = function (Callback) {
         var _this = this;
 
-        var Watcher = window.lock(function (e) {
+        return this.on('scroll', window.lock(function (e) {
           if (_this.body.scrollHeight <= _this.body.scrollTop + window.innerHeight + 1000) return Callback(e);
-        });
-        return this.on('scroll', Watcher);
+        }));
       };
     };
   }, {}], 3: [function (require, module, exports) {
@@ -166,12 +165,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           event = document.createEvent('HTMLEvents');
           event.initEvent(name, true, false);
         } else {
-          if (window.CustomEvent) {
-            event = new CustomEvent(name, { detail: detail });
-          } else {
-            event = document.createEvent('CustomEvent');
-            event.initCustomEvent(name, true, true, detail);
-          }
+          event = new CustomEvent(name, { detail: detail });
         }
         this.dispatchEvent(event);
         return event;
@@ -240,7 +234,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     };
   }, {}], 8: [function (require, module, exports) {
     module.exports = function (window) {
-      window.Ajax = function (Url, Method, Contents) {
+      window.ajax = function (Url, Method, Contents) {
         var XHR = new XMLHttpRequest();
         var Deferred = Promise.defer();
         XHR.open(Method, Url, true);
@@ -256,7 +250,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         XHR.send(Contents);
         return Deferred.promise;
       };
-      window.Ajax.Serialize = function (values) {
+      window.ajax.Serialize = function (values) {
         var ToReturn = [];
         for (var i in values) {
           ToReturn.push(i + '=' + encodeURIComponent(values[i]));
