@@ -101,12 +101,7 @@ module.exports = function(Prototype){
       event = document.createEvent('HTMLEvents')
       event.initEvent(name, true, false)
     } else {
-      if (window.CustomEvent) {
-        event = new CustomEvent(name, {detail})
-      } else {
-        event = document.createEvent('CustomEvent')
-        event.initCustomEvent(name, true, true, detail)
-      }
+      event = new CustomEvent(name, {detail})
     }
     this.dispatchEvent(event)
     return event
