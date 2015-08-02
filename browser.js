@@ -250,7 +250,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         XHR.send(Contents);
         return Deferred.promise;
       };
-      window.ajax.Serialize = function (values) {
+      window.ajax.serialize = function (values) {
         var ToReturn = [];
         for (var i in values) {
           ToReturn.push(i + '=' + encodeURIComponent(values[i]));
