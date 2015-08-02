@@ -4,8 +4,8 @@ module.exports = function(Prototype){
   Prototype.byTag = Prototype.getElementsByTagName
   Prototype.find = Prototype.querySelector
   Prototype.findAll = Prototype.querySelectorAll
-  Prototype.Ready = function(Callback){
-    this.readyState === "complete" || this.readyState === 'interactive' ? Callback() : this.on('DOMContentLoaded', Callback)
+  Prototype.ready = function(Callback){
+    this.readyState !== 'loading' ? Callback() : this.on('DOMContentLoaded', Callback)
   }
   Prototype.onScrollToBottom = function(Callback){
     return this.on('scroll', window.lock(e => {
