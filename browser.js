@@ -43,7 +43,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   }, {}], 3: [function (require, module, exports) {
     module.exports = function (Prototype) {
       Prototype.serialize = function () {
-        return Ajax.Serialize(this.serializeAssoc());
+        return ajax.serialize(this.serializeAssoc());
       };
       Prototype.serializeAssoc = function () {
         var ToReturn = {};
@@ -292,7 +292,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return cache[arg] ? cache[arg] : cache[arg] = callback.call(this, arg);
         };
         toReturn.prototype = callback.prototype;
-        return toReturn();
+        return toReturn;
       };
       window.extend = function () {
         var toReturn = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
