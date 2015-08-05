@@ -1,6 +1,6 @@
 module.exports = function(Prototype){
   Prototype.serialize = function(){
-    return Ajax.Serialize(this.serializeAssoc())
+    return ajax.serialize(this.serializeAssoc())
   }
   Prototype.serializeAssoc = function(){
     let ToReturn = {}
