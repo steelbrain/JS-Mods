@@ -49,7 +49,7 @@ module.exports = function(window){
       return cache[arg] ? cache[arg] : cache[arg] = callback.call(this, arg)
     }
     toReturn.prototype = callback.prototype
-    return toReturn()
+    return toReturn
   }
   window.extend = function(toReturn = {}) {
     for(var i = 1; i <= arguments.length; ++i){
