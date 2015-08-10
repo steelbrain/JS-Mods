@@ -129,16 +129,15 @@ module.exports = function (Prototype) {
     setImmediate(function () {
       if (_this.isInViewPort()) return callback.call(_this);
       var frameRequest = null;
-      var onScroll = function onScroll() {
+      var Disposable = document.on('scroll', function () {
         cancelAnimationFrame(frameRequest);
         frameRequest = requestAnimationFrame(function () {
           if (_this.isInViewPort()) {
-            document.off('scroll', onScroll);
+            Disposable.dispose();
             callback.call(_this);
           }
         });
-      };
-      document.on('scroll', onScroll);
+      });
     });
   };
   Prototype.trigger = function (name, detail) {
