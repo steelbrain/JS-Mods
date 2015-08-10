@@ -143,7 +143,7 @@ module.exports = function (Prototype) {
   };
   Prototype.trigger = function (name, detail) {
     var event = undefined;
-    if (!data) {
+    if (!detail) {
       event = document.createEvent('HTMLEvents');
       event.initEvent(name, true, false);
     } else {
