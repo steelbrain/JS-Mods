@@ -97,7 +97,7 @@ module.exports = function(Prototype){
   }
   Prototype.trigger = function(name, detail){
     let event
-    if(!data){
+    if(!detail){
       event = document.createEvent('HTMLEvents')
       event.initEvent(name, true, false)
     } else {
