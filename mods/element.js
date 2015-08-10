@@ -83,16 +83,15 @@ module.exports = function(Prototype){
     setImmediate(() => {
       if(this.isInViewPort()) return callback.call(this)
       var frameRequest = null
-      var onScroll = () => {
+      var Disposable = document.on('scroll', () => {
         cancelAnimationFrame(frameRequest)
         frameRequest = requestAnimationFrame(() => {
           if(this.isInViewPort()){
-            document.off('scroll', onScroll)
+            Disposable.dispose()
             callback.call(this)
           }
         })
-      }
-      document.on('scroll', onScroll)
+      })
     })
   }
   Prototype.trigger = function(name, detail){
