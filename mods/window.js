@@ -18,6 +18,9 @@ module.exports = function(window) {
   window.ajax.serialize = function(values) {
     const ToReturn = []
     for (var i in values) {
+      if (values[i] && typeof values[i] === 'object') {
+        values[i] = window.ajax.serialize(values[i])
+      }
       ToReturn.push(i + '=' + encodeURIComponent(values[i]))
     }
     return ToReturn.join('&')
