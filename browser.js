@@ -23,9 +23,6 @@ module.exports = function (Prototype) {
 'use strict';
 
 module.exports = function (Prototype) {
-  Prototype.serialize = function () {
-    return ajax.serialize(this.serializeAssoc());
-  };
   Prototype.serializeAssoc = function () {
     var ToReturn = {};
     var LFFix = /\r?\n/g;
@@ -151,6 +148,21 @@ module.exports = function (Prototype) {
     this.dispatchEvent(event);
     return event;
   };
+  Prototype.serialize = function () {
+    return ajax.serialize(this.serializeAssoc());
+  };
+  Prototype.serializeAssoc = function () {
+    var ToReturn = {};
+    var LFFix = /\r?\n/g;
+    var SpaceFix = /%20/g;
+    this.findAll('[name]').forEach(function (n) {
+      if (!n.name || (n.type === 'checkbox' || n.type === 'radio') && !n.checked) {
+        return;
+      }
+      ToReturn[n.name] = n.value.replace(LFFix, "\n").replace(SpaceFix, '+');
+    });
+    return ToReturn;
+  };
 };
 
 },{}],4:[function(require,module,exports){
@@ -250,6 +262,9 @@ module.exports = function (window) {
   window.ajax.serialize = function (values) {
     var ToReturn = [];
     for (var i in values) {
+      if (values[i] && typeof values[i] === 'object') {
+        values[i] = window.ajax.serialize(values[i]);
+      }
       ToReturn.push(i + '=' + encodeURIComponent(values[i]));
     }
     return ToReturn.join('&');
