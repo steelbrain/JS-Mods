@@ -105,4 +105,19 @@ module.exports = function(Prototype){
     this.dispatchEvent(event)
     return event
   }
+  Prototype.serialize = function() {
+    return ajax.serialize(this.serializeAssoc())
+  }
+  Prototype.serializeAssoc = function() {
+    const ToReturn = {}
+    const LFFix = /\r?\n/g
+    const SpaceFix = /%20/g
+    this.findAll('[name]').forEach(n => {
+      if (!n.name || ((n.type === 'checkbox' || n.type === 'radio') && !n.checked)) {
+        return
+      }
+      ToReturn[n.name] = n.value.replace(LFFix, "\n").replace(SpaceFix, '+')
+    })
+    return ToReturn
+  }
 }

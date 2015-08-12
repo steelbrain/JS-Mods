@@ -1,7 +1,4 @@
 module.exports = function(Prototype){
-  Prototype.serialize = function(){
-    return ajax.serialize(this.serializeAssoc())
-  }
   Prototype.serializeAssoc = function(){
     let ToReturn = {}
     let LFFix = /\r?\n/g
