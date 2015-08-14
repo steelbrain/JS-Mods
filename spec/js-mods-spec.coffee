@@ -102,11 +102,12 @@ describe 'JS-Mods', ->
     it 'returns null when its not found', ->
       expect($el.find('asdasd')).toBeNull()
   describe '::findAll', ->
-    it 'works returns a node list', ->
+    it 'works returns an array of Dollar Objects', ->
       $el.append(document.createElement('a'))
       found = $el.findAll('a')
       expect(found.length).toBe(1)
-      expect(found instanceof NodeList).toBe(true)
+      expect(found instanceof Array).toBe(true)
+      expect(found[0].constructor.name).toBe('Dollar')
   describe '::hide', ->
     it 'works', ->
       $el.hide()
