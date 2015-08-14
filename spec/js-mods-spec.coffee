@@ -111,40 +111,21 @@ describe 'JS-Mods', ->
   describe '::hide', ->
     it 'works', ->
       $el.hide()
-      expect($el.hasAttr('hidden')).toBe(true)
+      expect($el.hasAttribute('hidden')).toBe(true)
   describe '::show', ->
     it 'works', ->
       $el.hide()
-      expect($el.hasAttr('hidden')).toBe(true)
+      expect($el.hasAttribute('hidden')).toBe(true)
       $el.show()
-      expect($el.hasAttr('hidden')).toBe(false)
+      expect($el.hasAttribute('hidden')).toBe(false)
   describe '::toggleVisibility', ->
     it 'works', ->
       $el.toggleVisibility()
-      expect($el.hasAttr('hidden')).toBe(true)
+      expect($el.hasAttribute('hidden')).toBe(true)
       $el.toggleVisibility()
-      expect($el.hasAttr('hidden')).toBe(false)
+      expect($el.hasAttribute('hidden')).toBe(false)
       $el.toggleVisibility()
-      expect($el.hasAttr('hidden')).toBe(true)
-  describe '::getAttr', ->
-    it 'works', ->
-      el.setAttribute('test', 'wow')
-      expect($el.getAttr('test')).toBe('wow')
-  describe '::hasAttr', ->
-    it 'works', ->
-      expect($el.hasAttr('test')).toBe(false)
-      el.setAttribute('test', 'wow')
-      expect($el.hasAttr('test')).toBe(true)
-  describe '::setAttr', ->
-    it 'works', ->
-      $el.setAttr('hey', 'there')
-      expect(el.getAttribute('hey')).toBe('there')
-  describe '::removeAttr', ->
-    it 'works', ->
-      $el.setAttr('key', 'value')
-      expect($el.hasAttr('key')).toBe(true)
-      $el.removeAttr('key')
-      expect($el.hasAttr('key')).toBe(false)
+      expect($el.hasAttribute('hidden')).toBe(true)
   describe '::append', ->
     it 'appends an element', ->
       newEl = document.createElement('div')

@@ -75,28 +75,6 @@ var Dollar = (function () {
       return this;
     }
   }, {
-    key: 'getAttr',
-    value: function getAttr(name) {
-      return this.el.getAttribute(name);
-    }
-  }, {
-    key: 'hasAttr',
-    value: function hasAttr(name) {
-      return this.el.hasAttribute(name);
-    }
-  }, {
-    key: 'setAttr',
-    value: function setAttr(name, value) {
-      this.el.setAttribute(name, value);
-      return this;
-    }
-  }, {
-    key: 'removeAttr',
-    value: function removeAttr(name) {
-      this.el.removeAttribute(name);
-      return this;
-    }
-  }, {
     key: 'append',
     value: function append(obj) {
       this.el.appendChild(obj.el || obj);
@@ -258,7 +236,7 @@ function $(element) {
   var el = undefined;
   if (typeof element === 'string') {
     el = document.querySelector(element);
-  } else if (element && element.constructor.name.substr(0, 4) === 'HTML') {
+  } else if (element && element.childNodes.constructor.name === 'NodeList') {
     el = element;
   }
   if (!el) return null;
@@ -270,6 +248,9 @@ function $(element) {
     return dollar;
   }
 }
+$.findAll = function (selector) {
+  return document.querySelectorAll(selector).map($);
+};
 $.byClass = function (className, reference) {
   return (reference || document).getElementsByClassName(className).map($);
 };
@@ -400,13 +381,13 @@ NodeList.prototype.map = HTMLCollection.prototype.map = HTMLFormControlsCollecti
       return this;
     }
   });
-});['classList', 'style', 'dataset', 'childNodes', 'children', 'firstElementChild', 'lastElementChild', 'firstChild', 'lastChild'].forEach(function (entry) {
+});['classList', 'style', 'dataset', 'childNodes', 'children', 'firstElementChild', 'lastElementChild', 'firstChild', 'lastChild', 'parentNode'].forEach(function (entry) {
   Object.defineProperty(Dollar.prototype, entry, {
     get: function get() {
       return this.el[entry];
     }
   });
-});['addEventListener', 'removeEventListener', 'remove', 'matches', 'blur', 'focus'].forEach(function (entry) {
+});['addEventListener', 'removeEventListener', 'remove', 'matches', 'blur', 'focus', 'getAttribute', 'setAttribute', 'hasAttribute', 'removeAttribute'].forEach(function (entry) {
   Object.defineProperty(Dollar.prototype, entry, {
     value: function value() {
       var retValue = this.el[entry].apply(this.el, arguments);
