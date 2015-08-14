@@ -1,7 +1,0 @@
-require('./document')(Document.prototype)
-require('./element')(Element.prototype)
-require('./element-form')(HTMLFormElement.prototype)
-require('./event-kit')(window)
-require('./event-target')(EventTarget.prototype)
-require('./misc')()
-require('./window')(window)
