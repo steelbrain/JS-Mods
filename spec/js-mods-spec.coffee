@@ -83,6 +83,18 @@ describe 'JS-Mods', ->
     it 'sets title', ->
       $el.title = 'Hey'
       expect(el.title).toBe($el.title)
+    it 'gets childNodes', ->
+      expect($el.childNodes).toBe(el.childNodes)
+    it 'gets children', ->
+      expect($el.children).toBe(el.children)
+    it 'gets firstElementChild', ->
+      expect($el.firstElementChild).toBe(el.firstElementChild)
+    it 'gets lastElementChild', ->
+      expect($el.lastElementChild).toBe(el.lastElementChild)
+    it 'gets firstChild', ->
+      expect($el.firstChild).toBe(el.firstChild)
+    it 'gets lastChild', ->
+      expect($el.lastChild).toBe(el.lastChild)
   describe '::find', ->
     it 'returns a dollar object when something is found', ->
       $el.append(document.createElement('a'))
