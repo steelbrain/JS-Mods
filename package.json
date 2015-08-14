@@ -1,13 +1,15 @@
 {
   "name": "js-mods",
-  "version": "0.0.19",
+  "version": "1.0.0",
   "description": "JS Prototypes with SuperPowers!",
-  "main": "mods/main.js",
+  "main": "lib/mods.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "uc-compile mods/main.js --Babel --Browserify > browser.js",
-    "compile-min": "uc-compile mods/main.js --Babel --Browserify --Uglify > browser.min.js",
-    "compile-all": "npm run compile; npm run compile-min; git add browser.js; git add browser.min.js;"
+    "compile-browser": "uc-compile lib/browser.js --Babel --Browserify > dist/mods.browser.js",
+    "compile-transpile": "uc-compile lib/mods.js --Babel > dist/mods.transpiled.js",
+    "compile-browser-min": "uc-compile lib/browser.js --Babel --Browserify --Uglify > dist/mods.browser.min.js",
+    "compile-transpile-min": "uc-compile lib/mods.js --Babel --Uglify > dist/mods.transpiled.min.js",
+    "compile": "npm run compile-browser; npm run compile-transpile; npm run compile-browser-min; npm run compile-transpile-min"
   },
   "repository": {
     "type": "git",
