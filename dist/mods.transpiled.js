@@ -4,6 +4,8 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+var _zmEventKit = require('zm-event-kit');
+
 var Cache = new WeakMap();
 
 var Dollar = (function () {
@@ -30,7 +32,7 @@ var Dollar = (function () {
       var _this = this;
 
       this.el.addEventListener(event, callback);
-      return new Disposable(function () {
+      return new _zmEventKit.Disposable(function () {
         return _this.el.removeEventListener(event, callback);
       });
     }
@@ -78,6 +80,11 @@ var Dollar = (function () {
       return this.el.getAttribute(name);
     }
   }, {
+    key: 'hasAttr',
+    value: function hasAttr(name) {
+      return this.el.hasAttribute(name);
+    }
+  }, {
     key: 'setAttr',
     value: function setAttr(name, value) {
       this.el.setAttribute(name, value);
@@ -92,25 +99,25 @@ var Dollar = (function () {
   }, {
     key: 'append',
     value: function append(obj) {
-      this.el.appendChild(obj || obj.el);
+      this.el.appendChild(obj.el || obj);
       return this;
     }
   }, {
     key: 'appendTo',
     value: function appendTo(obj) {
-      (obj || obj.el).appendChild(this.el);
+      (obj.el || obj).appendChild(this.el);
       return this;
     }
   }, {
     key: 'prepend',
     value: function prepend(obj) {
-      this.el.insertBefore(obj || obj.el, this.el.firstChild);
+      this.el.insertBefore(obj.el || obj, this.el.firstChild);
       return this;
     }
   }, {
     key: 'prependTo',
     value: function prependTo(obj) {
-      obj = obj || obj.el;
+      obj = obj.el || obj;
       obj.insertBefore(this.el, obj.firstChild);
       return this;
     }
@@ -182,7 +189,7 @@ var Dollar = (function () {
       } else {
         event = new CustomEvent(name, { detail: detail });
       }
-      this.dispatchEvent(event);
+      this.el.dispatchEvent(event);
       return event;
     }
   }, {
@@ -250,6 +257,22 @@ var Dollar = (function () {
       return $.ajax.serialize(this.serializeAssoc());
     }
   }, {
+    key: 'matches',
+    value: function matches(selector) {
+      return this.el.matches(selector);
+    }
+  }, {
+    key: 'hasChild',
+    value: function hasChild(el) {
+      return el.parentNode === this.el;
+    }
+  }, {
+    key: 'remove',
+    value: function remove() {
+      this.el.remove();
+      return this;
+    }
+  }, {
     key: 'id',
     get: function get() {
       return this.el.id;
@@ -295,6 +318,36 @@ var Dollar = (function () {
     key: 'dataset',
     get: function get() {
       return this.el.dataset;
+    }
+  }, {
+    key: 'childNodes',
+    get: function get() {
+      return this.el.childNodes;
+    }
+  }, {
+    key: 'children',
+    get: function get() {
+      return this.el.children;
+    }
+  }, {
+    key: 'firstElementChild',
+    get: function get() {
+      return this.el.firstElementChild;
+    }
+  }, {
+    key: 'lastElementChild',
+    get: function get() {
+      return this.el.lastElementChild;
+    }
+  }, {
+    key: 'firstChild',
+    get: function get() {
+      return this.el.firstChild;
+    }
+  }, {
+    key: 'lastChild',
+    get: function get() {
+      return this.el.lastChild;
     }
   }, {
     key: 'title',

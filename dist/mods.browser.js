@@ -5,6 +5,8 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+var _zmEventKit = require('zm-event-kit');
+
 var Cache = new WeakMap();
 
 var Dollar = (function () {
@@ -31,7 +33,7 @@ var Dollar = (function () {
       var _this = this;
 
       this.el.addEventListener(event, callback);
-      return new Disposable(function () {
+      return new _zmEventKit.Disposable(function () {
         return _this.el.removeEventListener(event, callback);
       });
     }
@@ -79,6 +81,11 @@ var Dollar = (function () {
       return this.el.getAttribute(name);
     }
   }, {
+    key: 'hasAttr',
+    value: function hasAttr(name) {
+      return this.el.hasAttribute(name);
+    }
+  }, {
     key: 'setAttr',
     value: function setAttr(name, value) {
       this.el.setAttribute(name, value);
@@ -93,25 +100,25 @@ var Dollar = (function () {
   }, {
     key: 'append',
     value: function append(obj) {
-      this.el.appendChild(obj || obj.el);
+      this.el.appendChild(obj.el || obj);
       return this;
     }
   }, {
     key: 'appendTo',
     value: function appendTo(obj) {
-      (obj || obj.el).appendChild(this.el);
+      (obj.el || obj).appendChild(this.el);
       return this;
     }
   }, {
     key: 'prepend',
     value: function prepend(obj) {
-      this.el.insertBefore(obj || obj.el, this.el.firstChild);
+      this.el.insertBefore(obj.el || obj, this.el.firstChild);
       return this;
     }
   }, {
     key: 'prependTo',
     value: function prependTo(obj) {
-      obj = obj || obj.el;
+      obj = obj.el || obj;
       obj.insertBefore(this.el, obj.firstChild);
       return this;
     }
@@ -183,7 +190,7 @@ var Dollar = (function () {
       } else {
         event = new CustomEvent(name, { detail: detail });
       }
-      this.dispatchEvent(event);
+      this.el.dispatchEvent(event);
       return event;
     }
   }, {
@@ -251,6 +258,22 @@ var Dollar = (function () {
       return $.ajax.serialize(this.serializeAssoc());
     }
   }, {
+    key: 'matches',
+    value: function matches(selector) {
+      return this.el.matches(selector);
+    }
+  }, {
+    key: 'hasChild',
+    value: function hasChild(el) {
+      return el.parentNode === this.el;
+    }
+  }, {
+    key: 'remove',
+    value: function remove() {
+      this.el.remove();
+      return this;
+    }
+  }, {
     key: 'id',
     get: function get() {
       return this.el.id;
@@ -296,6 +319,36 @@ var Dollar = (function () {
     key: 'dataset',
     get: function get() {
       return this.el.dataset;
+    }
+  }, {
+    key: 'childNodes',
+    get: function get() {
+      return this.el.childNodes;
+    }
+  }, {
+    key: 'children',
+    get: function get() {
+      return this.el.children;
+    }
+  }, {
+    key: 'firstElementChild',
+    get: function get() {
+      return this.el.firstElementChild;
+    }
+  }, {
+    key: 'lastElementChild',
+    get: function get() {
+      return this.el.lastElementChild;
+    }
+  }, {
+    key: 'firstChild',
+    get: function get() {
+      return this.el.firstChild;
+    }
+  }, {
+    key: 'lastChild',
+    get: function get() {
+      return this.el.lastChild;
     }
   }, {
     key: 'title',
@@ -449,9 +502,213 @@ NodeList.prototype.at = HTMLCollection.prototype.at = HTMLFormControlsCollection
 
 module.exports = $;
 
-},{}],2:[function(require,module,exports){
+},{"zm-event-kit":5}],2:[function(require,module,exports){
+"use strict";
+
+var _createClass = (function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+  };
+})();
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+var CompositeDisposable = (function () {
+  function CompositeDisposable() {
+    _classCallCheck(this, CompositeDisposable);
+
+    this.disposed = false;
+    this.disposables = new Set(arguments);
+  }
+
+  _createClass(CompositeDisposable, [{
+    key: "dispose",
+    value: function dispose() {
+      if (this.disposed) return;
+      this.disposed = true;
+      this.disposables.forEach(function (item) {
+        return item.dispose();
+      });
+      this.disposables = null;
+    }
+  }, {
+    key: "add",
+    value: function add() {
+      var _this = this;
+
+      if (this.disposed) return;
+      Array.prototype.forEach.call(arguments, function (item) {
+        return _this.disposables.add(item);
+      });
+    }
+  }, {
+    key: "remove",
+    value: function remove() {
+      var _this2 = this;
+
+      if (this.disposed) return;
+      Array.prototype.forEach.call(arguments, function (item) {
+        return _this2.disposables["delete"](item);
+      });
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      if (this.disposed) return;
+      this.disposables.clear();
+    }
+  }]);
+
+  return CompositeDisposable;
+})();
+
+module.exports = CompositeDisposable;
+
+},{}],3:[function(require,module,exports){
+'use strict';
+
+var _createClass = (function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+  };
+})();
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError('Cannot call a class as a function');
+  }
+}
+
+var Disposable = (function () {
+  function Disposable(callback) {
+    _classCallCheck(this, Disposable);
+
+    this.disposed = false;
+    this.callback = callback;
+  }
+
+  _createClass(Disposable, [{
+    key: 'dispose',
+    value: function dispose() {
+      if (this.disposed) return;
+      if (typeof this.callback === 'function') {
+        this.callback();
+      }
+      this.callback = null;
+      this.disposed = true;
+    }
+  }]);
+
+  return Disposable;
+})();
+
+module.exports = Disposable;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+var _createClass = (function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+  };
+})();
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError('Cannot call a class as a function');
+  }
+}
+
+var Disposable = require('./Disposable');
+
+var Emitter = (function () {
+  function Emitter() {
+    _classCallCheck(this, Emitter);
+
+    this.disposed = false;
+    this.handlersByEventName = {};
+  }
+
+  _createClass(Emitter, [{
+    key: 'dispose',
+    value: function dispose() {
+      this.disposed = true;
+      this.handlersByEventName = null;
+    }
+  }, {
+    key: 'on',
+    value: function on(eventName, handler) {
+      var _this = this;
+
+      if (this.disposed) throw new Error('Emitter has been disposed');
+      if (typeof handler !== 'function') throw new Error('Handler must be a function');
+      if (this.handlersByEventName.hasOwnProperty(eventName)) {
+        this.handlersByEventName[eventName].push(handler);
+      } else {
+        this.handlersByEventName[eventName] = [handler];
+      }
+      return new Disposable(function () {
+        return _this.off(eventName, handler);
+      });
+    }
+  }, {
+    key: 'off',
+    value: function off(eventName, handler) {
+      if (this.disposed || !this.handlersByEventName.hasOwnProperty(eventName)) return;
+      var Index = undefined;
+      if ((Index = this.handlersByEventName[eventName].indexOf(handler)) !== -1) {
+        this.handlersByEventName[eventName].splice(Index, 1);
+      }
+    }
+  }, {
+    key: 'clear',
+    value: function clear() {
+      this.handlersByEventName = {};
+    }
+  }, {
+    key: 'emit',
+    value: function emit(eventName, value) {
+      if (this.disposed || !this.handlersByEventName.hasOwnProperty(eventName)) return;
+      this.handlersByEventName[eventName].forEach(function (callback) {
+        return callback(value);
+      });
+    }
+  }]);
+
+  return Emitter;
+})();
+
+module.exports = Emitter;
+
+},{"./Disposable":3}],5:[function(require,module,exports){
+'use strict';
+
+var EventKit = {
+  CompositeDisposable: require('./CompositeDisposable'),
+  Disposable: require('./Disposable'),
+  Emitter: require('./Emitter')
+};
+module.exports = EventKit;
+
+},{"./CompositeDisposable":2,"./Disposable":3,"./Emitter":4}],6:[function(require,module,exports){
 'use strict';
 
 window.$ = require('./mods');
 
-},{"./mods":1}]},{},[2]);
+},{"./mods":1}]},{},[6]);

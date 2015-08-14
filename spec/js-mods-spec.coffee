@@ -176,3 +176,125 @@ describe 'JS-Mods', ->
       expect(el.childNodes.length).toBe(1)
       $newEl.prependTo($el)
       expect(el.childNodes.length).toBe(1)
+  describe '::insertAfter', ->
+    it 'is inserted after the referencing element', ->
+      newEl = document.createElement('div')
+      lastEl = document.createElement('div')
+      $el.append(newEl)
+      $(lastEl).insertAfter(newEl)
+      expect($el.lastElementChild).toBe(lastEl)
+  describe '::addClass', ->
+    it 'works', ->
+      $el.addClass('hey')
+      expect(el.classList.contains('hey')).toBe(true)
+  describe '::removeClass', ->
+    it 'works', ->
+      $el.addClass('hey')
+      expect(el.classList.contains('hey')).toBe(true)
+      $el.removeClass('hey')
+      expect(el.classList.contains('hey')).toBe(false)
+  describe '::hasClass', ->
+    it 'works', ->
+      $el.addClass('hey')
+      expect($el.hasClass('hey')).toBe(true)
+      $el.removeClass('hey')
+      expect($el.hasClass('hey')).toBe(false)
+  describe '::toggleClass', ->
+    it 'works', ->
+      expect($el.hasClass('hey')).toBe(false)
+      $el.toggleClass('hey')
+      expect($el.hasClass('hey')).toBe(true)
+      $el.toggleClass('hey')
+      expect($el.hasClass('hey')).toBe(false)
+  describe '::setText', ->
+    it 'works', ->
+      expect($el.textContent).toBe('')
+      $el.setText('Hey There')
+      expect($el.textContent).toBe('Hey There')
+  describe '::setHTML', ->
+    it 'works', ->
+      expect($el.innerHTML).toBe('')
+      $el.setHTML('&nbsp;')
+      expect($el.innerHTML).toBe('&nbsp;')
+  describe '::isInViewPort', ->
+    # Ignore for now
+    expect(true).toBe(true)
+  describe '::offset', ->
+    # Ignore for now
+    expect(true).toBe(true)
+  describe '::closest', ->
+    it 'returns the closest element', ->
+      newEl = document.createElement('div')
+      $el.append(newEl)
+      expect($(newEl).closest('div')).toBe($(newEl))
+      anotherNewEl = document.createElement('a')
+      $el.append(anotherNewEl)
+      expect($(anotherNewEl).closest('div')).toBe($el)
+  describe '::trigger', ->
+    it 'works with native events', ->
+      triggered = false
+      $el.on 'click', -> triggered = true
+      $el.trigger('click')
+      expect(triggered).toBe(true)
+    it 'works with custom events', ->
+      triggered = false
+      $el.on 'wow', -> triggered = true
+      $el.trigger('wow')
+      expect(triggered).toBe(true)
+    it 'passes the data', ->
+      triggered = false
+      $el.on 'click', (e) ->
+        triggered = true
+        expect(e.detail.a).toBe(1)
+        expect(e.detail.b).toBe(2)
+      $el.trigger('click', {a : 1, b : 2})
+      expect(triggered).toBe(true)
+  describe '::onScrollToBottom', ->
+    it 'works', ->
+      # Ignore for now
+      expect(true).toBe(true)
+  describe '::onScrollIntoView', ->
+    it 'works', ->
+      # Ignore for now
+      expect(true).toBe(true)
+  describe '::matches', ->
+    it 'works', ->
+      expect($el.matches('.a')).toBe(false)
+      $el.addClass('a')
+      expect($el.matches('.a')).toBe(true)
+  describe '::focus', ->
+    it 'focuses that element', ->
+      newEl = document.createElement('input')
+      $newEl = $(newEl)
+      document.body.appendChild(newEl)
+      $newEl.focus()
+      expect($newEl.matches(':focus')).toBe(true)
+      $newEl.remove()
+  describe '::blur', ->
+    it 'works', ->
+      # Ignore for now
+      expect(true).toBe(true)
+  describe '::serializeAssoc', ->
+    it 'works', ->
+      input = document.createElement('input')
+      input.type = 'text'
+      input.name = 'input'
+      input.value = 'input'
+      $el.append(input)
+      expect($el.serializeAssoc().input).toBe('input')
+  describe '::serialize', ->
+    it 'works', ->
+      input = document.createElement('input')
+      input.type = 'text'
+      input.name = 'input'
+      input.value = 'input'
+      $el.append(input)
+      expect($el.serialize()).toBe('input=input')
+  describe '::remove and ::hasChild', ->
+    it 'works', ->
+      input = document.createElement('input')
+      expect($el.hasChild(input)).toBe(false)
+      $el.append(input)
+      expect($el.hasChild(input)).toBe(true)
+      $(input).remove()
+      expect($el.hasChild(input)).toBe(false)
