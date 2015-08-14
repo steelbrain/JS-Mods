@@ -55,7 +55,7 @@ var Dollar = (function () {
   }, {
     key: 'findAll',
     value: function findAll(selector) {
-      return this.el.querySelectorAll(selector);
+      return this.el.querySelectorAll(selector).map($);
     }
   }, {
     key: 'hide',
@@ -273,91 +273,6 @@ var Dollar = (function () {
       this.el.remove();
       return this;
     }
-  }, {
-    key: 'id',
-    get: function get() {
-      return this.el.id;
-    },
-    set: function set(val) {
-      this.el.id = val;
-    }
-  }, {
-    key: 'className',
-    get: function get() {
-      return this.el.className;
-    },
-    set: function set(val) {
-      this.el.className = val;
-    }
-  }, {
-    key: 'textContent',
-    get: function get() {
-      return this.el.textContent;
-    },
-    set: function set(val) {
-      this.el.textContent = val;
-    }
-  }, {
-    key: 'innerHTML',
-    get: function get() {
-      return this.el.innerHTML;
-    },
-    set: function set(val) {
-      return this.el.innerHTML = val;
-    }
-  }, {
-    key: 'classList',
-    get: function get() {
-      return this.el.classList;
-    }
-  }, {
-    key: 'style',
-    get: function get() {
-      return this.el.style;
-    }
-  }, {
-    key: 'dataset',
-    get: function get() {
-      return this.el.dataset;
-    }
-  }, {
-    key: 'childNodes',
-    get: function get() {
-      return this.el.childNodes;
-    }
-  }, {
-    key: 'children',
-    get: function get() {
-      return this.el.children;
-    }
-  }, {
-    key: 'firstElementChild',
-    get: function get() {
-      return this.el.firstElementChild;
-    }
-  }, {
-    key: 'lastElementChild',
-    get: function get() {
-      return this.el.lastElementChild;
-    }
-  }, {
-    key: 'firstChild',
-    get: function get() {
-      return this.el.firstChild;
-    }
-  }, {
-    key: 'lastChild',
-    get: function get() {
-      return this.el.lastChild;
-    }
-  }, {
-    key: 'title',
-    get: function get() {
-      return this.el.title;
-    },
-    set: function set(title) {
-      this.el.title = title;
-    }
   }]);
 
   return Dollar;
@@ -366,7 +281,7 @@ var Dollar = (function () {
 function $(element) {
   var el = undefined;
   if (typeof element === 'string') {
-    el = document.find(element);
+    el = document.querySelector(element);
   } else if (element && element.constructor.name.substr(0, 4) === 'HTML') {
     el = element;
   }
@@ -380,10 +295,10 @@ function $(element) {
   }
 }
 $.byClass = function (className, reference) {
-  return (reference || document).getElementsByClassName(className);
+  return (reference || document).getElementsByClassName(className).map($);
 };
 $.byTag = function (tagName, reference) {
-  return (reference || document).getElementsByTagName(tagName);
+  return (reference || document).getElementsByTagName(tagName).map($);
 };
 $.byId = function (id) {
   return $(document.getElementById(id));
@@ -499,6 +414,23 @@ NodeList.prototype.forEach = HTMLCollection.prototype.forEach = HTMLFormControls
 NodeList.prototype.indexOf = HTMLCollection.prototype.indexOf = HTMLFormControlsCollection.prototype.indexOf = Array.prototype.indexOf;
 NodeList.prototype.last = HTMLCollection.prototype.last = HTMLFormControlsCollection.prototype.last = Array.prototype.last;
 NodeList.prototype.at = HTMLCollection.prototype.at = HTMLFormControlsCollection.prototype.at = Array.prototype.at;
+NodeList.prototype.map = HTMLCollection.prototype.map = HTMLFormControlsCollection.prototype.map = Array.prototype.map;['id', 'className', 'textContent', 'innerHTML', 'title', 'name', 'value', 'checked', 'selected'].forEach(function (entry) {
+  Object.defineProperty(Dollar.prototype, entry, {
+    get: function get() {
+      return this.el[entry];
+    },
+    set: function set(value) {
+      this.el[entry] = value;
+      return this;
+    }
+  });
+});['classList', 'style', 'dataset', 'childNodes', 'children', 'firstElementChild', 'lastElementChild', 'firstChild', 'lastChild'].forEach(function (entry) {
+  Object.defineProperty(Dollar.prototype, entry, {
+    get: function get() {
+      return this.el[entry];
+    }
+  });
+});
 
 module.exports = $;
 
