@@ -126,3 +126,41 @@ describe 'JS-Mods', ->
     it 'works', ->
       $el.setAttr('hey', 'there')
       expect(el.getAttribute('hey')).toBe('there')
+  describe '::removeAttr', ->
+    it 'works', ->
+      $el.setAttr('key', 'value')
+      expect($el.hasAttr('key')).toBe(true)
+      $el.removeAttr('key')
+      expect($el.hasAttr('key')).toBe(false)
+  describe '::append', ->
+    it 'appends an element', ->
+      newEl = document.createElement('div')
+      $el.append(newEl)
+      expect(el.childNodes.length).toBe(1)
+      $el.append($(newEl))
+      expect(el.childNodes.length).toBe(1)
+  describe '::appendTo', ->
+    it 'appends to an element', ->
+      newEl = document.createElement('div')
+      $newEl = $(newEl)
+      expect(el.childNodes.length).toBe(0)
+      $newEl.appendTo(el)
+      expect(el.childNodes.length).toBe(1)
+      $newEl.appendTo($el)
+      expect(el.childNodes.length).toBe(1)
+  describe '::prepend', ->
+    it 'prepends an element', ->
+      newEl = document.createElement('div')
+      $el.prepend(newEl)
+      expect(el.childNodes.length).toBe(1)
+      $el.prepend($(newEl))
+      expect(el.childNodes.length).toBe(1)
+  describe '::prependTo', ->
+    it 'prepends to an element', ->
+      newEl = document.createElement('div')
+      $newEl = $(newEl)
+      expect(el.childNodes.length).toBe(0)
+      $newEl.prependTo(el)
+      expect(el.childNodes.length).toBe(1)
+      $newEl.prependTo($el)
+      expect(el.childNodes.length).toBe(1)
