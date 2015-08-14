@@ -226,18 +226,6 @@ var Dollar = (function () {
       return this;
     }
   }, {
-    key: 'focus',
-    value: function focus() {
-      this.el.focus();
-      return this;
-    }
-  }, {
-    key: 'blur',
-    value: function blur() {
-      this.el.blur();
-      return this;
-    }
-  }, {
     key: 'serializeAssoc',
     value: function serializeAssoc() {
       var ToReturn = {};
@@ -257,20 +245,9 @@ var Dollar = (function () {
       return $.ajax.serialize(this.serializeAssoc());
     }
   }, {
-    key: 'matches',
-    value: function matches(selector) {
-      return this.el.matches(selector);
-    }
-  }, {
     key: 'hasChild',
     value: function hasChild(el) {
       return el.parentNode === this.el;
-    }
-  }, {
-    key: 'remove',
-    value: function remove() {
-      this.el.remove();
-      return this;
     }
   }]);
 
@@ -427,6 +404,14 @@ NodeList.prototype.map = HTMLCollection.prototype.map = HTMLFormControlsCollecti
   Object.defineProperty(Dollar.prototype, entry, {
     get: function get() {
       return this.el[entry];
+    }
+  });
+});['addEventListener', 'removeEventListener', 'remove', 'matches', 'blur', 'focus'].forEach(function (entry) {
+  Object.defineProperty(Dollar.prototype, entry, {
+    value: function value() {
+      var retValue = this.el[entry].apply(this.el, arguments);
+      if (typeof retValue === 'undefined') retValue = this;
+      return retValue;
     }
   });
 });
