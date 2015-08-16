@@ -306,8 +306,8 @@ $.lock = function (callback) {
 
     if (status) return status;
     status = true;
-    return new Promise(function () {
-      callback.call(_this6, arg);
+    return new Promise(function (resovle) {
+      resovle(callback.call(_this6, arg));
     }).then(function (val) {
       status = false;
       return val;
