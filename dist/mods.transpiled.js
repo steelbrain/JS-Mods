@@ -387,7 +387,7 @@ NodeList.prototype.map = HTMLCollection.prototype.map = HTMLFormControlsCollecti
       return this.el[entry];
     }
   });
-});['addEventListener', 'removeEventListener', 'remove', 'matches', 'blur', 'focus', 'getAttribute', 'setAttribute', 'hasAttribute', 'removeAttribute'].forEach(function (entry) {
+});['addEventListener', 'removeEventListener', 'remove', 'matches', 'blur', 'focus', 'getAttribute', 'setAttribute', 'hasAttribute', 'removeAttribute', 'dispatchEvent'].forEach(function (entry) {
   Object.defineProperty(Dollar.prototype, entry, {
     value: function value() {
       var retValue = this.el[entry].apply(this.el, arguments);
