@@ -210,7 +210,7 @@ var Dollar = (function () {
       var LFFix = /\r?\n/g;
       var SpaceFix = /%20/g;
       this.findAll('[name]').forEach(function (n) {
-        if (!n.name || (n.type === 'checkbox' || n.type === 'radio') && !n.checked) {
+        if (!n.name || (n.type === 'checkbox' || n.type === 'radio') && !n.checked || !n.value) {
           return;
         }
         ToReturn[n.name] = n.value.replace(LFFix, "\n").replace(SpaceFix, '+');
