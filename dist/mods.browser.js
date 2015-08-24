@@ -388,7 +388,7 @@ NodeList.prototype.map = HTMLCollection.prototype.map = HTMLFormControlsCollecti
       return this.el[entry];
     }
   });
-});['addEventListener', 'removeEventListener', 'remove', 'matches', 'blur', 'focus', 'getAttribute', 'setAttribute', 'hasAttribute', 'removeAttribute', 'dispatchEvent'].forEach(function (entry) {
+});['addEventListener', 'removeEventListener', 'remove', 'matches', 'blur', 'focus', 'getAttribute', 'setAttribute', 'hasAttribute', 'removeAttribute', 'dispatchEvent', 'hasChildNodes'].forEach(function (entry) {
   Object.defineProperty(Dollar.prototype, entry, {
     value: function value() {
       var retValue = this.el[entry].apply(this.el, arguments);
@@ -400,7 +400,26 @@ NodeList.prototype.map = HTMLCollection.prototype.map = HTMLFormControlsCollecti
 
 module.exports = $;
 
-},{"zm-event-kit":5}],2:[function(require,module,exports){
+},{"zm-event-kit":2}],2:[function(require,module,exports){
+'use strict';
+
+if (typeof window !== 'undefined') {
+  window.EventKit = window.EventKit || {
+    CompositeDisposable: require('./CompositeDisposable'),
+    Disposable: require('./Disposable'),
+    Emitter: require('./Emitter')
+  };
+  module.exports = window.EventKit;
+} else if (typeof self !== 'undefined') {
+  self.EventKit = self.EventKit || {
+    CompositeDisposable: require('./CompositeDisposable'),
+    Disposable: require('./Disposable'),
+    Emitter: require('./Emitter')
+  };
+  module.exports = self.EventKit;
+}
+
+},{"./CompositeDisposable":3,"./Disposable":4,"./Emitter":5}],3:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () {
@@ -470,7 +489,7 @@ var CompositeDisposable = (function () {
 
 module.exports = CompositeDisposable;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () {
@@ -514,7 +533,7 @@ var Disposable = (function () {
 
 module.exports = Disposable;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () {
@@ -594,17 +613,7 @@ var Emitter = (function () {
 
 module.exports = Emitter;
 
-},{"./Disposable":3}],5:[function(require,module,exports){
-'use strict';
-
-var EventKit = {
-  CompositeDisposable: require('./CompositeDisposable'),
-  Disposable: require('./Disposable'),
-  Emitter: require('./Emitter')
-};
-module.exports = EventKit;
-
-},{"./CompositeDisposable":2,"./Disposable":3,"./Emitter":4}],6:[function(require,module,exports){
+},{"./Disposable":4}],6:[function(require,module,exports){
 'use strict';
 
 window.$ = require('./mods');
