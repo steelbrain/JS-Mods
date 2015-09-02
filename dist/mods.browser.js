@@ -1,4 +1,9 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+window.$ = require('./mods');
+
+},{"./mods":2}],2:[function(require,module,exports){
 // @Compiler-Babel "true"
 'use strict';
 
@@ -212,7 +217,7 @@ var Dollar = (function () {
       var LFFix = /\r?\n/g;
       var SpaceFix = /%20/g;
       this.findAll('[name]').forEach(function (n) {
-        if (!n.name || (n.type === 'checkbox' || n.type === 'radio') && !n.checked || !n.value) {
+        if (!n.name || (n.type === 'checkbox' || n.type === 'radio') && !n.checked || typeof n.value !== 'string') {
           return;
         }
         ToReturn[n.name] = n.value.replace(LFFix, "\n").replace(SpaceFix, '+');
@@ -401,26 +406,7 @@ NodeList.prototype.map = HTMLCollection.prototype.map = HTMLFormControlsCollecti
 
 module.exports = $;
 
-},{"zm-event-kit":2}],2:[function(require,module,exports){
-'use strict';
-
-if (typeof window !== 'undefined') {
-  window.EventKit = window.EventKit || {
-    CompositeDisposable: require('./CompositeDisposable'),
-    Disposable: require('./Disposable'),
-    Emitter: require('./Emitter')
-  };
-  module.exports = window.EventKit;
-} else if (typeof self !== 'undefined') {
-  self.EventKit = self.EventKit || {
-    CompositeDisposable: require('./CompositeDisposable'),
-    Disposable: require('./Disposable'),
-    Emitter: require('./Emitter')
-  };
-  module.exports = self.EventKit;
-}
-
-},{"./CompositeDisposable":3,"./Disposable":4,"./Emitter":5}],3:[function(require,module,exports){
+},{"zm-event-kit":6}],3:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () {
@@ -617,6 +603,10 @@ module.exports = Emitter;
 },{"./Disposable":4}],6:[function(require,module,exports){
 'use strict';
 
-window.$ = require('./mods');
+module.exports = {
+  CompositeDisposable: require('./CompositeDisposable'),
+  Disposable: require('./Disposable'),
+  Emitter: require('./Emitter')
+};
 
-},{"./mods":1}]},{},[6]);
+},{"./CompositeDisposable":3,"./Disposable":4,"./Emitter":5}]},{},[1]);
