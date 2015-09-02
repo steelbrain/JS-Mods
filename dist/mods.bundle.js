@@ -1,267 +1,166 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"js-mods":[function(require,module,exports){
 'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
 var _zmEventKit = require('zm-event-kit');
 
-var Cache = new WeakMap();
-
-var Dollar = (function () {
-  function Dollar(el) {
-    _classCallCheck(this, Dollar);
-
-    this.el = el;
-  }
-
-  // External $
-
-  _createClass(Dollar, [{
-    key: 'ready',
-    value: function ready(callback) {
-      if (document.readyState !== 'complete') {
-        document.addEventListener('DOMContentLoaded', callback);
-      } else {
-        callback.call(document);
-      }
-    }
-  }, {
-    key: 'on',
-    value: function on(event, callback) {
-      var _this = this;
-
-      this.el.addEventListener(event, callback);
-      return new _zmEventKit.Disposable(function () {
-        return _this.el.removeEventListener(event, callback);
-      });
-    }
-  }, {
-    key: 'once',
-    value: function once(event, callback) {
-      var _this2 = this;
-
-      var disposable = this.on(event, function (e) {
-        return disposable.dispose() || callback.call(_this2, e);
-      });
-      return disposable;
-    }
-  }, {
-    key: 'find',
-    value: function find(selector) {
-      return $(this.el.querySelector(selector));
-    }
-  }, {
-    key: 'findAll',
-    value: function findAll(selector) {
-      return this.el.querySelectorAll(selector).map($);
-    }
-  }, {
-    key: 'hide',
-    value: function hide() {
-      this.el.setAttribute('hidden', true);
-      return this;
-    }
-  }, {
-    key: 'show',
-    value: function show() {
-      this.el.removeAttribute('hidden');
-      return this;
-    }
-  }, {
-    key: 'toggleVisibility',
-    value: function toggleVisibility() {
-      if (this.el.hasAttribute('hidden')) this.show();else this.hide();
-      return this;
-    }
-  }, {
-    key: 'append',
-    value: function append(obj) {
-      this.el.appendChild(obj.el || obj);
-      return this;
-    }
-  }, {
-    key: 'appendTo',
-    value: function appendTo(obj) {
-      (obj.el || obj).appendChild(this.el);
-      return this;
-    }
-  }, {
-    key: 'prepend',
-    value: function prepend(obj) {
-      this.el.insertBefore(obj.el || obj, this.el.firstChild);
-      return this;
-    }
-  }, {
-    key: 'prependTo',
-    value: function prependTo(obj) {
-      obj = obj.el || obj;
-      obj.insertBefore(this.el, obj.firstChild);
-      return this;
-    }
-  }, {
-    key: 'insertAfter',
-    value: function insertAfter(target) {
-      target = target || target.el;
-      target.parentNode.insertBefore(this.el, target.nextSibling);
-      return this;
-    }
-  }, {
-    key: 'addClass',
-    value: function addClass(name) {
-      this.el.classList.add(name);
-      return this;
-    }
-  }, {
-    key: 'removeClass',
-    value: function removeClass(name) {
-      this.el.classList.remove(name);
-      return this;
-    }
-  }, {
-    key: 'hasClass',
-    value: function hasClass(name) {
-      return this.el.classList.contains(name);
-    }
-  }, {
-    key: 'toggleClass',
-    value: function toggleClass(name) {
-      this.el.classList.toggle(name);
-      return this;
-    }
-  }, {
-    key: 'setText',
-    value: function setText(text) {
-      this.el.textContent = text;
-      return this;
-    }
-  }, {
-    key: 'setHTML',
-    value: function setHTML(html) {
-      this.el.innerHTML = html;
-      return this;
-    }
-  }, {
-    key: 'isInViewPort',
-    value: function isInViewPort() {
-      var rect = this.el.getBoundingClientRect();
-      return rect.top >= 0 && rect.bottom <= window.innerHeight;
-    }
-  }, {
-    key: 'offset',
-    value: function offset() {
-      return this.el.getBoundingClientRect();
-    }
-  }, {
-    key: 'closest',
-    value: function closest(selector) {
-      return $(this.el.closest(selector));
-    }
-  }, {
-    key: 'trigger',
-    value: function trigger(name, detail) {
-      var event = undefined;
-      if (!detail) {
-        event = document.createEvent('HTMLEvents');
-        event.initEvent(name, true, false);
-      } else {
-        event = new CustomEvent(name, { detail: detail });
-      }
-      this.el.dispatchEvent(event);
-      return event;
-    }
-  }, {
-    key: 'onScrollToBottom',
-    value: function onScrollToBottom(callback) {
-      var _this3 = this;
-
-      var disposable = $(document).on('scroll', function (e) {
-        if (document.body.scrollHeight <= document.body.scrollTop + window.innerHeight + 1000) {
-          disposable.dispose();
-          return callback.call(_this3, e);
-        }
-      });
-      return disposable;
-    }
-  }, {
-    key: 'onScrollIntoView',
-    value: function onScrollIntoView(callback) {
-      var _this4 = this;
-
-      $.setImmediate(function () {
-        if (_this4.isInViewPort()) return callback.call(_this4);
-        var frameRequest = null;
-        var Disposable = document.on('scroll', function () {
-          cancelAnimationFrame(frameRequest);
-          frameRequest = requestAnimationFrame(function () {
-            if (_this4.isInViewPort()) {
-              Disposable.dispose();
-              callback.call(_this4);
-            }
-          });
-        });
-      });
-      return this;
-    }
-  }, {
-    key: 'serializeAssoc',
-    value: function serializeAssoc() {
-      var ToReturn = {};
-      var LFFix = /\r?\n/g;
-      var SpaceFix = /%20/g;
-      this.findAll('[name]').forEach(function (n) {
-        if (!n.name || (n.type === 'checkbox' || n.type === 'radio') && !n.checked || typeof n.value !== 'string') {
-          return;
-        }
-        ToReturn[n.name] = n.value.replace(LFFix, "\n").replace(SpaceFix, '+');
-      });
-      return ToReturn;
-    }
-  }, {
-    key: 'serialize',
-    value: function serialize() {
-      return $.ajax.serialize(this.serializeAssoc());
-    }
-  }, {
-    key: 'hasChild',
-    value: function hasChild(el) {
-      return el.parentNode === this.el;
-    }
-  }]);
-
-  return Dollar;
-})();
-
-function $(element) {
-  var el = undefined;
-  if (typeof element === 'string') {
-    el = document.querySelector(element);
-  } else if (element && element.childNodes.constructor.name === 'NodeList') {
-    el = element;
-  }
-  if (!el) return null;
-  if (Cache.has(el)) {
-    return Cache.get(el);
+// Document
+Document.prototype.ready = function (callback) {
+  if (document.readyState !== 'complete') {
+    document.addEventListener('DOMContentLoaded', callback);
   } else {
-    var dollar = new Dollar(el);
-    Cache.set(el, dollar);
-    return dollar;
+    callback.call(document);
   }
-}
-$.findAll = function (selector) {
-  return document.querySelectorAll(selector).map($);
 };
-$.byClass = function (className, reference) {
-  return (reference || document).getElementsByClassName(className).map($);
+Document.prototype.onScrollToBottom = function (callback) {
+  var _this = this;
+
+  var disposable = this.on('scroll', function (e) {
+    if (_this.body.scrollHeight <= _this.body.scrollTop + window.innerHeight + 1000) {
+      disposable.dispose();
+      return callback.call(_this, e);
+    }
+  });
+  return disposable;
 };
-$.byTag = function (tagName, reference) {
-  return (reference || document).getElementsByTagName(tagName).map($);
+Document.prototype.findAll = function (selector) {
+  return document.querySelectorAll(selector);
 };
-$.byId = function (id) {
-  return $(document.getElementById(id));
+Document.prototype.byClass = function (className) {
+  return this.getElementsByClassName(className);
 };
-$.ajax = function (Url, Method, Contents) {
+Document.prototype.byTag = function (tagName) {
+  return this.getElementsByTagName(tagName);
+};
+Document.prototype.byId = function (id) {
+  return document.getElementById(id);
+};
+// Element
+Element.prototype.on = function (event, callback) {
+  var _this2 = this;
+
+  this.addEventListener(event, callback);
+  return new _zmEventKit.Disposable(function () {
+    return _this2.removeEventListener(event, callback);
+  });
+};
+Element.prototype.once = function (event, callback) {
+  var _this3 = this;
+
+  var disposable = this.on(event, function (e) {
+    return disposable.dispose() || callback.call(_this3, e);
+  });
+  return disposable;
+};
+Element.prototype.find = function (selector) {
+  return this.querySelector(selector);
+};
+Element.prototype.findAll = function (selector) {
+  return this.querySelectorAll(selector);
+};
+Element.prototype.hide = function () {
+  this.setAttribute('hidden', true);
+  return this;
+};
+Element.prototype.show = function () {
+  this.removeAttribute('hidden');
+  return this;
+};
+Element.prototype.toggleVisibility = function () {
+  if (this.hasAttribute('hidden')) this.show();else this.hide();
+  return this;
+};
+Element.prototype.append = function (obj) {
+  this.appendChild(obj);
+  return this;
+};
+Element.prototype.appendTo = function (obj) {
+  obj.appendChild(this);
+  return this;
+};
+Element.prototype.prepend = function (obj) {
+  this.insertBefore(obj, this.firstChild);
+  return this;
+};
+Element.prototype.prependTo = function (obj) {
+  obj.insertBefore(this, obj.firstChild);
+  return this;
+};
+Element.prototype.addClass = function (name) {
+  this.classList.add(name);
+  return this;
+};
+Element.prototype.removeClass = function (name) {
+  this.classList.remove(name);
+  return this;
+};
+Element.prototype.hasClass = function (name) {
+  return this.classList.contains(name);
+};
+Element.prototype.removeClass = function (name) {
+  this.classList.remove(name);
+  return this;
+};
+Element.prototype.toggleClass = function (name) {
+  this.classList.toggle(name);
+  return this;
+};
+Element.prototype.setText = function (text) {
+  this.textContent = text;
+  return this;
+};
+Element.prototype.setHTML = function (html) {
+  this.innerHTML = html;
+  return this;
+};
+Element.prototype.isInViewPort = function () {
+  var rect = this.getBoundingClientRect();
+  return rect.top >= 0 && rect.bottom <= window.innerHeight;
+};
+Element.prototype.trigger = function (name, detail) {
+  var event = undefined;
+  if (!detail) {
+    event = document.createEvent('HTMLEvents');
+    event.initEvent(name, true, false);
+  } else {
+    event = new CustomEvent(name, { detail: detail });
+  }
+  this.dispatchEvent(event);
+  return event;
+};
+Element.prototype.onScrollIntoView = function (callback) {
+  var _this4 = this;
+
+  setImmediate(function () {
+    if (_this4.isInViewPort()) return callback.call(_this4);
+    var frameRequest = null;
+    var Disposable = document.on('scroll', function () {
+      cancelAnimationFrame(frameRequest);
+      frameRequest = requestAnimationFrame(function () {
+        if (_this4.isInViewPort()) {
+          Disposable.dispose();
+          callback.call(_this4);
+        }
+      });
+    });
+  });
+  return this;
+};
+Element.prototype.serializeAssoc = function () {
+  var ToReturn = {};
+  var LFFix = /\r?\n/g;
+  var SpaceFix = /%20/g;
+  this.findAll('[name]').forEach(function (n) {
+    if (!n.name || (n.type === 'checkbox' || n.type === 'radio') && !n.checked || typeof n.value !== 'string') {
+      return;
+    }
+    ToReturn[n.name] = n.value.replace(LFFix, "\n").replace(SpaceFix, '+');
+  });
+  return ToReturn;
+};
+Element.prototype.serialize = function () {
+  return ajax.serialize(this.serializeAssoc());
+};
+window.ajax = function (Url, Method, Contents) {
   return new Promise(function (resolve, reject) {
     var XHR = new XMLHttpRequest();
     XHR.open(Method, Url, true);
@@ -277,7 +176,7 @@ $.ajax = function (Url, Method, Contents) {
     XHR.send(Contents);
   });
 };
-$.ajax.serialize = function (values) {
+window.ajax.serialize = function (values) {
   var ToReturn = [];
   for (var i in values) {
     if (values[i] && typeof values[i] === 'object') {
@@ -287,7 +186,7 @@ $.ajax.serialize = function (values) {
   }
   return ToReturn.join('&');
 };
-$.debounce = function (callback, delay) {
+window.debounce = function (callback, delay) {
   var timeout = null;
   var toReturn = function toReturn(arg) {
     var _this5 = this;
@@ -300,7 +199,7 @@ $.debounce = function (callback, delay) {
   toReturn.prototype = callback.prototype;
   return toReturn;
 };
-$.lock = function (callback) {
+window.lock = function (callback) {
   var status = false;
   return function (arg) {
     var _this6 = this;
@@ -315,7 +214,7 @@ $.lock = function (callback) {
     });
   };
 };
-$.memoize = function (callback) {
+window.memoize = function (callback) {
   var cache = {};
   var toReturn = function toReturn(arg) {
     return cache[arg] ? cache[arg] : cache[arg] = callback.call(this, arg);
@@ -323,7 +222,7 @@ $.memoize = function (callback) {
   toReturn.prototype = callback.prototype;
   return toReturn;
 };
-$.extend = function () {
+window.extend = function () {
   var toReturn = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
   for (var i = 1; i <= arguments.length; ++i) {
@@ -336,22 +235,20 @@ $.extend = function () {
   }
   return toReturn;
 };
-$.setImmediate = function (func) {
+window.setImmediate = function (func) {
   setTimeout(func, 0);
 };
-$.reload = function () {
+window.reload = function () {
   var timeout = arguments.length <= 0 || arguments[0] === undefined ? 2000 : arguments[0];
 
   setTimeout(function () {
     return location.reload();
   }, timeout);
 };
-$.getLocationParam = function (key) {
+window.getLocationParam = function (key) {
   var value = new RegExp('[?&]' + key + '=[^&]+').exec(location.search);
   return !!value ? decodeURIComponent(value.toString().replace(/^[^=]+./, '')) : false;
 };
-// $.fn --> Dollar.prototype
-$.fn = Dollar.prototype;
 
 // Some prototype mods
 Array.prototype.last = function () {
@@ -372,31 +269,5 @@ NodeList.prototype.forEach = HTMLCollection.prototype.forEach = HTMLFormControls
 NodeList.prototype.indexOf = HTMLCollection.prototype.indexOf = HTMLFormControlsCollection.prototype.indexOf = Array.prototype.indexOf;
 NodeList.prototype.last = HTMLCollection.prototype.last = HTMLFormControlsCollection.prototype.last = Array.prototype.last;
 NodeList.prototype.at = HTMLCollection.prototype.at = HTMLFormControlsCollection.prototype.at = Array.prototype.at;
-NodeList.prototype.map = HTMLCollection.prototype.map = HTMLFormControlsCollection.prototype.map = Array.prototype.map;['id', 'className', 'textContent', 'innerHTML', 'title', 'name', 'value', 'checked', 'selected'].forEach(function (entry) {
-  Object.defineProperty(Dollar.prototype, entry, {
-    get: function get() {
-      return this.el[entry];
-    },
-    set: function set(value) {
-      this.el[entry] = value;
-      return this;
-    }
-  });
-});['classList', 'style', 'dataset', 'childNodes', 'children', 'firstElementChild', 'lastElementChild', 'firstChild', 'lastChild', 'parentNode'].forEach(function (entry) {
-  Object.defineProperty(Dollar.prototype, entry, {
-    get: function get() {
-      return this.el[entry];
-    }
-  });
-});['addEventListener', 'removeEventListener', 'remove', 'matches', 'blur', 'focus', 'getAttribute', 'setAttribute', 'hasAttribute', 'removeAttribute', 'dispatchEvent', 'hasChildNodes'].forEach(function (entry) {
-  Object.defineProperty(Dollar.prototype, entry, {
-    value: function value() {
-      var retValue = this.el[entry].apply(this.el, arguments);
-      if (typeof retValue === 'undefined') retValue = this;
-      return retValue;
-    }
-  });
-});
-
-module.exports = $;
+NodeList.prototype.map = HTMLCollection.prototype.map = HTMLFormControlsCollection.prototype.map = Array.prototype.map;
 },{"zm-event-kit":"zm-event-kit"}]},{},[]);
