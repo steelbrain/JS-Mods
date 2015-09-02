@@ -1,15 +1,17 @@
 {
   "name": "js-mods",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "JS Prototypes with SuperPowers!",
-  "main": "lib/mods.js",
+  "main": "dist/mods.transpiled.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "compile-browser": "uc-compile lib/browser.js --Babel --Browserify > dist/mods.browser.js",
-    "compile-transpile": "uc-compile lib/mods.js --Babel > dist/mods.transpiled.js",
-    "compile-browser-min": "uc-compile lib/browser.js --Babel --Browserify --Uglify > dist/mods.browser.min.js",
-    "compile-transpile-min": "uc-compile lib/mods.js --Babel --Uglify > dist/mods.transpiled.min.js",
-    "compile": "npm run compile-browser; npm run compile-transpile; npm run compile-browser-min; npm run compile-transpile-min"
+    "test": "apm test",
+    "compile-browser": "uc-compile lib/browser.js > dist/mods.browser.js",
+    "compile-transpile": "uc-compile lib/mods.js > dist/mods.transpiled.js",
+    "compile-bundle": "browserify -r .:js-mods -x zm-event-kit > dist/mods.bundle.js",
+    "compile-browser-min": "uc-compile lib/browser.js --Uglify > dist/mods.browser.min.js",
+    "compile-transpile-min": "uc-compile lib/mods.js --Uglify > dist/mods.transpiled.min.js",
+    "compile-bundle-min": "browserify -r .:js-mods -x zm-event-kit | uglifyjs > dist/mods.bundle.min.js",
+    "compile": "npm run compile-browser; npm run compile-transpile; npm run compile-browser-min; npm run compile-transpile-min; npm run compile-bundle; npm run compile-bundle-min"
   },
   "repository": {
     "type": "git",
