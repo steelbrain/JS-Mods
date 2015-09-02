@@ -33,8 +33,8 @@ Document.prototype.byTag = function (tagName) {
 Document.prototype.byId = function (id) {
   return document.getElementById(id);
 };
-// Element
-Element.prototype.on = function (event, callback) {
+// EventTarget
+EventTarget.prototype.on = function (event, callback) {
   var _this2 = this;
 
   this.addEventListener(event, callback);
@@ -42,7 +42,7 @@ Element.prototype.on = function (event, callback) {
     return _this2.removeEventListener(event, callback);
   });
 };
-Element.prototype.once = function (event, callback) {
+EventTarget.prototype.once = function (event, callback) {
   var _this3 = this;
 
   var disposable = this.on(event, function (e) {
@@ -50,6 +50,7 @@ Element.prototype.once = function (event, callback) {
   });
   return disposable;
 };
+// Element
 Element.prototype.find = function (selector) {
   return this.querySelector(selector);
 };
