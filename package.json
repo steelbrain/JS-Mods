@@ -1,6 +1,6 @@
 {
   "name": "js-mods",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "JS Prototypes with SuperPowers!",
   "main": "dist/mods.transpiled.js",
   "scripts": {
