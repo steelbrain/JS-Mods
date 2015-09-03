@@ -259,9 +259,11 @@ window.getLocationParam = function (key) {
 };
 
 // Some prototype mods
-Array.prototype.last = function () {
-  return this[this.length - 1];
-};
+Object.defineProperty(Array.prototype, 'last', {
+  get: function get() {
+    return this[this.length - 1];
+  }
+});
 Array.prototype.at = function (index) {
   if (index >= 0) {
     return this[index];
