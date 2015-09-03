@@ -260,11 +260,14 @@ window.getLocationParam = function (key) {
 };
 
 // Some prototype mods
-Object.defineProperty(Array.prototype, 'last', {
-  get: function get() {
-    return this[this.length - 1];
-  }
+[Array.prototype, NodeList.prototype, HTMLCollection.prototype, HTMLFormControlsCollection.prototype].forEach(function (proto) {
+  Object.defineProperty(proto, 'last', {
+    get: function get() {
+      return this[this.length - 1];
+    }
+  });
 });
+
 Array.prototype.at = function (index) {
   if (index >= 0) {
     return this[index];
@@ -278,7 +281,6 @@ Array.prototype.insert = function (index, item) {
 };
 NodeList.prototype.forEach = HTMLCollection.prototype.forEach = HTMLFormControlsCollection.prototype.forEach = Array.prototype.forEach;
 NodeList.prototype.indexOf = HTMLCollection.prototype.indexOf = HTMLFormControlsCollection.prototype.indexOf = Array.prototype.indexOf;
-NodeList.prototype.last = HTMLCollection.prototype.last = HTMLFormControlsCollection.prototype.last = Array.prototype.last;
 NodeList.prototype.at = HTMLCollection.prototype.at = HTMLFormControlsCollection.prototype.at = Array.prototype.at;
 NodeList.prototype.map = HTMLCollection.prototype.map = HTMLFormControlsCollection.prototype.map = Array.prototype.map;
 
