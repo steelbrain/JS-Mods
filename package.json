@@ -1,15 +1,17 @@
 {
   "name": "js-mods",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "JS Prototypes with SuperPowers!",
   "main": "dist/mods.transpiled.js",
   "scripts": {
     "test": "apm test",
+    "compile-browser": "uc-compile lib/mods.js --Browserify > dist/mods.browser.js",
     "compile-transpile": "uc-compile lib/mods.js > dist/mods.transpiled.js",
     "compile-bundle": "browserify -r .:js-mods -x zm-event-kit > dist/mods.bundle.js",
+    "compile-browser-min": "uc-compile lib/mods.js --Browserify --Uglify > dist/mods.browser.min.js",
     "compile-transpile-min": "uc-compile lib/mods.js --Uglify > dist/mods.transpiled.min.js",
     "compile-bundle-min": "browserify -r .:js-mods -x zm-event-kit | uglifyjs > dist/mods.bundle.min.js",
-    "compile": "npm run compile-transpile; npm run compile-transpile-min; npm run compile-bundle; npm run compile-bundle-min"
+    "compile": "npm run compile-browser; npm run compile-transpile; npm run compile-browser-min; npm run compile-transpile-min; npm run compile-bundle; npm run compile-bundle-min"
   },
   "repository": {
     "type": "git",
