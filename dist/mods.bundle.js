@@ -173,6 +173,8 @@ Element.prototype.removeAttr = function (name) {
   return this;
 };
 window.ajax = function (Url, Method, Contents) {
+  var Headers = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+
   return new Promise(function (resolve, reject) {
     var XHR = new XMLHttpRequest();
     XHR.open(Method, Url, true);
@@ -185,6 +187,9 @@ window.ajax = function (Url, Method, Contents) {
       }
     });
     XHR.addEventListener('error', reject);
+    for (var key in Headers) {
+      XHR.setRequestHeader(key, Headers[key]);
+    }
     XHR.send(Contents);
   });
 };

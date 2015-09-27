@@ -1,6 +1,6 @@
 {
   "name": "js-mods",
-  "version": "2.0.6",
+  "version": "2.1.0",
   "description": "JS Prototypes with SuperPowers!",
   "main": "dist/mods.transpiled.js",
   "scripts": {
@@ -25,5 +25,6 @@
   "homepage": "https://github.com/steelbrain/JS-Mods#readme",
   "dependencies": {
     "zm-event-kit": "^1.0.0"
-  }
+  },
+  "browser": "dist/mods.transpiled.js"
 }
