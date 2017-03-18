@@ -1,5 +1,7 @@
 JS-Mods
 =======
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/steelbrain/JS-Mods.svg)](https://greenkeeper.io/)
 JS-Mods is my personal collection of JS protoype mods. They make the DOM and other stuff rock :metal:
 
 #### Usage
